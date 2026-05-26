@@ -2,18 +2,17 @@ import cv2
 import numpy as np
 import torch
 from torch.utils.data import Dataset
-
+from pathlib import Path
 
 class CorrosionSegmentationDataset(Dataset):
     def __init__(self, image_dir, mask_dir, color_to_class, transform=None):
-        self.image_dir = image_dir
-        self.mask_dir = mask_dir
+        self.image_dir = Path(image_dir)
+        self.mask_dir = Path(mask_dir)
         self.color_to_class = color_to_class
         self.transform = transform
-
         self.image_paths = sorted(
             [
-                p for p in image_dir.iterdir()
+                p for p in self.image_dir.iterdir()
                 if p.suffix.lower() in [".jpg", ".jpeg", ".png", ".bmp", ".tif", ".tiff"]
             ]
         )

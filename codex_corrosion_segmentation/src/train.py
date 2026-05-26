@@ -112,7 +112,8 @@ def train_one_epoch(model, loader, optimizer, criterion, scaler, device):
 
         optimizer.zero_grad(set_to_none=True)
 
-        with torch.cuda.amp.autocast(enabled=device.type == "cuda"):
+        # with torch.cuda.amp.autocast(enabled=device.type == "cuda"):
+        with torch.cuda.amp.autocast("cuda", enabled=True):
             logits = model(images)
 
             # Required model output:
@@ -153,7 +154,7 @@ def validate(model, loader, criterion, device):
         images = images.to(device, non_blocking=True)
         masks = masks.to(device, non_blocking=True)
 
-        with torch.cuda.amp.autocast(enabled=device.type == "cuda"):
+        with torch.cuda.amp.autocast("cuda", enabled=True):
             logits = model(images)
             loss = criterion(logits, masks)
 
@@ -276,7 +277,6 @@ def main():
         mode="max",
         factor=0.5,
         patience=5,
-        verbose=True,
     )
 
     scaler = torch.cuda.amp.GradScaler(enabled=device.type == "cuda")

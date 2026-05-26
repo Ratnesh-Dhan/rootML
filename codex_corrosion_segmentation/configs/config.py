@@ -2,9 +2,10 @@ from pathlib import Path
 import os
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
+print("ROOT_DIR:", ROOT_DIR)
 
 # Base Path
-base_path = "/mnt/d/DATASETS/CORROSION/Corrosion_Condition_State_Classification/Corrosion_Condition_State_Classification/512x512"
+base_path = "/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512"
 
 TRAIN_IMAGE_DIR = os.path.join(base_path, "Train", "images_512")
 TRAIN_MASK_DIR = os.path.join(base_path, "Train", "mask_512")

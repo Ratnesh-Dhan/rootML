@@ -1,3 +1,4 @@
+import os
 import sys
 from pathlib import Path
 
@@ -91,32 +92,52 @@ def predict_single_image(image_path, checkpoint_path, output_path, device):
     print(f"Saved overlay: {output_path.with_name(output_path.stem + '_overlay.png')}")
 
 
+# def main():
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument("--image", type=str, required=True)
+#     # parser.add_argument("--checkpoint", type=str, required=True)
+#     parser.add_argument("--output", type=str, default=None)
+
+#     args = parser.parse_args()
+
+#     image_path = Path(args.image)
+#     # checkpoint_path = Path(args.checkpoint)
+#     checkpoint_path = Path("../outputs/checkpoints/best.pth")
+
+#     if args.output:
+#         output_path = Path(args.output)
+#     else:
+#         PREDICTION_DIR.mkdir(parents=True, exist_ok=True)
+#         output_path = PREDICTION_DIR / f"{image_path.stem}_pred_mask.png"
+
+#     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+#     print(f"Using device: {device}")
+
+#     predict_single_image(
+#         image_path=image_path,
+#         checkpoint_path=checkpoint_path,
+#         output_path=output_path,
+#         device=device,
+#     )
+
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--image", type=str, required=True)
-    parser.add_argument("--checkpoint", type=str, required=True)
-    parser.add_argument("--output", type=str, default=None)
-
-    args = parser.parse_args()
-
-    image_path = Path(args.image)
-    checkpoint_path = Path(args.checkpoint)
-
-    if args.output:
-        output_path = Path(args.output)
-    else:
-        PREDICTION_DIR.mkdir(parents=True, exist_ok=True)
-        output_path = PREDICTION_DIR / f"{image_path.stem}_pred_mask.png"
+    image_folder = "/mnt/z/DATASETS/corrosion"
+    output_folder = "/mnt/z/DATASETS/output_corrosion"
+    # checkpoint_path = Path(args.checkpoint)
+    checkpoint_path = Path("./outputs/checkpoints/best.pth")
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
-    predict_single_image(
-        image_path=image_path,
-        checkpoint_path=checkpoint_path,
-        output_path=output_path,
-        device=device,
-    )
+    for image in os.listdir(image_folder):
+        image_path = Path(image_folder) / image
+        output_path = Path(output_folder) / f"{image_path.stem}_pred_mask.png"
+        predict_single_image(
+            image_path=image_path,
+            checkpoint_path=checkpoint_path,
+            output_path=output_path,
+            device=device,
+        )
 
 
 if __name__ == "__main__":
