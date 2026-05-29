@@ -92,16 +92,19 @@ def predict_single_image(image_path, checkpoint_path, output_path, device):
     # print(f"Saved mask: {output_path}")
     # print(f"Saved overlay: {output_path.with_name(output_path.stem + '_overlay.png')}")
 
-    plt.figure(figsize=(10, 10))
+    overlay = cv2.cvtColor(overlay, cv2.COLOR_BGR2RGB)
+
+    plt.figure(figsize=(20,20))
     plt.subplot(1,2,1)
     plt.imshow(image_rgb)
-    plt.title("Input image")
+    plt.title("Input Image")
     plt.axis("off")
     plt.subplot(1,2,2)
     plt.imshow(overlay)
     plt.title("Corrosion Detected")
     plt.axis("off")
     plt.savefig(output_path.with_name(output_path.stem + "_overlay.png"), bbox_inches="tight")
+    print(f"Saved prediction: {output_path.with_name(output_path.stem + '_overlay.png')}")
 
 
 # def main():
