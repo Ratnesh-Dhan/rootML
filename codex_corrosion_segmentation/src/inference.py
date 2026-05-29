@@ -10,6 +10,7 @@ import torch
 import numpy as np
 import albumentations as A
 import segmentation_models_pytorch as smp
+from matplotlib import pyplot as plt
 
 from configs.config import (
     IMAGE_SIZE,
@@ -74,7 +75,7 @@ def predict_single_image(image_path, checkpoint_path, output_path, device):
     pred = torch.argmax(logits, dim=1).squeeze(0).cpu().numpy().astype(np.uint8)
 
     pred_bgr = class_mask_to_bgr(pred, CLASS_TO_COLOR)
-
+ 
     pred_bgr = cv2.resize(
         pred_bgr,
         (original_w, original_h),
@@ -85,11 +86,22 @@ def predict_single_image(image_path, checkpoint_path, output_path, device):
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    cv2.imwrite(str(output_path), pred_bgr)
-    cv2.imwrite(str(output_path.with_name(output_path.stem + "_overlay.png")), overlay)
+    # cv2.imwrite(str(output_path), pred_bgr)
+    # cv2.imwrite(str(output_path.with_name(output_path.stem + "_overlay.png")), overlay)
 
-    print(f"Saved mask: {output_path}")
-    print(f"Saved overlay: {output_path.with_name(output_path.stem + '_overlay.png')}")
+    # print(f"Saved mask: {output_path}")
+    # print(f"Saved overlay: {output_path.with_name(output_path.stem + '_overlay.png')}")
+
+    plt.figure(figsize=(10, 10))
+    plt.subplot(1,2,1)
+    plt.imshow(image_rgb)
+    plt.title("Input image")
+    plt.axis("off")
+    plt.subplot(1,2,2)
+    plt.imshow(overlay)
+    plt.title("Corrosion Detected")
+    plt.axis("off")
+    plt.savefig(output_path.with_name(output_path.stem + "_overlay.png"), bbox_inches="tight")
 
 
 # def main():
@@ -121,8 +133,9 @@ def predict_single_image(image_path, checkpoint_path, output_path, device):
 #     )
 
 def main():
-    image_folder = "/mnt/z/DATASETS/corrosion"
-    output_folder = "/mnt/z/DATASETS/output_corrosion"
+    image_folder = "/mnt/z/DATASETS/corrosion_detect/images"
+    output_folder = "/mnt/z/DATASETS/output_corrosion_29_5_26"
+    os.makedirs(output_folder, exist_ok=True)
     # checkpoint_path = Path(args.checkpoint)
     checkpoint_path = Path("./outputs/checkpoints/best.pth")
 
