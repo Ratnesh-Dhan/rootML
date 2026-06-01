@@ -25,7 +25,8 @@ os.makedirs(PREDICTION_DIR, exist_ok=True)
 IMAGE_SIZE = 512
 NUM_CLASSES = 4
 
-ENCODER_NAME = "efficientnet-b0"
+# ENCODER_NAME = "efficientnet-b0"
+ENCODER_NAME = "resnet50"
 ENCODER_WEIGHTS = "imagenet"
 
 BATCH_SIZE = 4
@@ -33,7 +34,8 @@ NUM_WORKERS = 4
 
 EPOCHS = 80
 LR = 1e-4
-WEIGHT_DECAY = 1e-4
+# WEIGHT_DECAY = 1e-4
+WEIGHT_DECAY = 1e-3
 
 DEVICE = "cuda"
 
