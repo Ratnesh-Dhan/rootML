@@ -113,7 +113,8 @@ def train_one_epoch(model, loader, optimizer, criterion, scaler, device):
         optimizer.zero_grad(set_to_none=True)
 
         # with torch.cuda.amp.autocast(enabled=device.type == "cuda"):
-        with torch.cuda.amp.autocast("cuda", enabled=True):
+        # with torch.cuda.amp.autocast(enabled=True):
+        with torch.autocast(device_type="cuda", dtype=torch.float16):
             logits = model(images)
 
             # Required model output:
@@ -154,7 +155,8 @@ def validate(model, loader, criterion, device):
         images = images.to(device, non_blocking=True)
         masks = masks.to(device, non_blocking=True)
 
-        with torch.cuda.amp.autocast("cuda", enabled=True):
+        # with torch.cuda.amp.autocast(enabled=True):
+        with torch.autocast(device_type="cuda", dtype=torch.float16):
             logits = model(images)
             loss = criterion(logits, masks)
 
@@ -350,7 +352,7 @@ def main():
             f"{value:.4f}" if value is not None else f"Class {cls}: N/A"
         )
     
-    results_file = "../outputs" / "final_results.txt"
+    results_file = CHECKPOINT_DIR / "final_results.txt"
 
     with open(results_file, "w") as f:
         f.write("========== FINAL RESULTS ==========\n")
