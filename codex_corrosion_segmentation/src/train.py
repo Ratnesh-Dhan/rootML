@@ -281,6 +281,7 @@ def main():
 
     scaler = torch.cuda.amp.GradScaler(enabled=device.type == "cuda")
 
+    best_class_ious = None
     best_iou = 0.0
 
     for epoch in range(1, EPOCHS + 1):
@@ -324,6 +325,7 @@ def main():
 
         if val_iou > best_iou:
             best_iou = val_iou
+            best_class_ious = val_class_ious.copy()
             save_checkpoint(
                 path=CHECKPOINT_DIR / "best.pth",
                 model=model,
@@ -338,7 +340,29 @@ def main():
             save_validation_predictions(model, val_loader, device, epoch)
 
     print("Training complete.")
-    print(f"Best validation IoU: {best_iou:.4f}")
+    # print(f"Best validation IoU: {best_iou:.4f}")
+    print("\n========== FINAL RESULTS ==========")
+    print(f"Best Validation mIoU: {best_iou:.4f}")
+
+    for cls, value in best_class_ious.items():
+        print(
+            f"Class {cls} IoU: "
+            f"{value:.4f}" if value is not None else f"Class {cls}: N/A"
+        )
+    
+    results_file = "../outputs" / "final_results.txt"
+
+    with open(results_file, "w") as f:
+        f.write("========== FINAL RESULTS ==========\n")
+        f.write(f"Best Validation mIoU: {best_iou:.4f}\n\n")
+
+        for cls, value in best_class_ious.items():
+            if value is not None:
+                f.write(f"Class {cls} IoU: {value:.4f}\n")
+            else:
+                f.write(f"Class {cls} IoU: N/A\n")
+
+    print(f"Results saved to: {results_file}")
 
 
 if __name__ == "__main__":
