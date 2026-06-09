@@ -1,6 +1,6 @@
 import json
 
-with open("/mnt/d/DATASETS/pascal-voc-2012-DatasetNinja/meta.json") as f:
+with open("/mnt/z/DATASETS/pascal-voc-2012-DatasetNinja/meta.json") as f:
     meta = json.load(f)
 
 class_map = {
