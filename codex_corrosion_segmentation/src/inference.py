@@ -140,7 +140,8 @@ def main():
     output_folder = "/mnt/z/DATASETS/output_corrosion_29_5_26"
     os.makedirs(output_folder, exist_ok=True)
     # checkpoint_path = Path(args.checkpoint)
-    checkpoint_path = Path("./outputs/checkpoints/best.pth")
+    # checkpoint_path = Path("./outputs/checkpoints/best.pth")
+    checkpoint_path = Path("D:\DATASETS\CORROSION\outputs\checkpoints\last.pth")
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
