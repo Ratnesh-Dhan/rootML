@@ -11,3 +11,6 @@ wheels/
 .venv
 
 *.csv
+*.png
+*.jpg
+*.json

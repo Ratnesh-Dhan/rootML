@@ -29,6 +29,7 @@ full_mask = np.zeros(
 total_length = len(ann['objects'])
 
 for idx in range(total_length):
+    
     obj = ann["objects"][idx]
 
     compressed = base64.b64decode(
@@ -44,7 +45,7 @@ for idx in range(total_length):
     cropped_mask = (
         cropped_mask > 0
     ).astype(np.uint8)
-
+    print("cropped mask :", np.unique(cropped_mask))
     # full_mask = np.zeros(
     #     (height, width),
     #     dtype=np.uint8
