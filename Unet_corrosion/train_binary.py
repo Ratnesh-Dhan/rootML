@@ -27,15 +27,13 @@ if torch.cuda.is_available():
 COLOR_TO_CLASS = {
     (0, 0, 0): 0,        # background
     (0, 0, 128): 1,      # class1
-    (0, 128, 0): 2,      # class2
-    (0, 128, 128): 3,    # class3
+    (0, 128, 0): 1,      # class2
+    (0, 128, 128): 1,    # class3
 }
 
 CLASS_NAMES = [
     "background",
-    "mild",
-    "moderate",
-    "severe"
+    "corrosion"
 ]
 
 train_dataset = CorrosionSegmentationDataset(
@@ -52,20 +50,12 @@ val_dataset = CorrosionSegmentationDataset(
     transform=get_val_transform()
 )
 
-## Testing number of pixels 
-images_per_class = np.zeros(4)
-
-for _, mask in val_dataset:
-
-    present_classes = np.unique(mask.numpy())
-
-    for cls in present_classes:
-        images_per_class[cls] += 1
-
-print(images_per_class)
-
-exit(0)
-## Testing number of pixels 
+# ## TESTING
+# for _, mask in train_dataset:
+#     print(torch.unique(mask))
+#     break
+# exit(0)
+# ## TESTING
 
 train_loader = DataLoader(
     train_dataset,
@@ -91,7 +81,7 @@ device = torch.device(
 )
 
 model = build_model(
-    num_classes=4
+    num_classes=2
 ).to(device)
 
 ce_loss = torch.nn.CrossEntropyLoss()
@@ -122,9 +112,7 @@ val_losses = []
 val_ious = []
 
 background_ious = []
-mild_ious = []
-moderate_ious = []
-severe_ious = []
+corrosion_ious = []
 
 # For early stopping
 early_stopping_patience = 10
@@ -169,8 +157,8 @@ for epoch in range(num_epochs):
     val_iou = 0.0
 
     #Trying new per class iou
-    total_iou = np.zeros(4)
-    count = np.zeros(4)
+    total_iou = np.zeros(2)
+    count = np.zeros(2)
 
     val_loss = 0
     with torch.no_grad():
@@ -185,12 +173,12 @@ for epoch in range(num_epochs):
             val_iou += compute_iou(
                 outputs,
                 masks,
-                num_classes=4,
+                num_classes=2,
             )
             batch_ious = compute_class_iou(
             outputs,
             masks,
-            num_classes=4,
+            num_classes=2,
             )
 
             loss = (
@@ -218,9 +206,7 @@ for epoch in range(num_epochs):
 
     # saving seperate IOU   
     background_ious.append(class_iou[0])
-    mild_ious.append(class_iou[1])
-    moderate_ious.append(class_iou[2])
-    severe_ious.append(class_iou[3])
+    corrosion_ious.append(class_iou[1])
 
     # scheduler.step(class_iou)
     val_loss /= len(val_loader)
@@ -301,9 +287,7 @@ history = pd.DataFrame({
     "val_miou": val_ious,
 
     "background_iou": background_ious,
-    "mild_iou": mild_ious,
-    "moderate_iou": moderate_ious,
-    "severe_iou": severe_ious,
+    "corrosion_iou": corrosion_ious,
 })
 
 
@@ -340,9 +324,7 @@ plt.close()
 plt.figure(figsize=(10,6))
 
 plt.plot(background_ious, label="Background")
-plt.plot(mild_ious, label="Mild")
-plt.plot(moderate_ious, label="Moderate")
-plt.plot(severe_ious, label="Severe")
+plt.plot(corrosion_ious, label="Corrosion")
 
 plt.xlabel("Epoch")
 plt.ylabel("IoU")
