@@ -104,6 +104,11 @@ train_losses = []
 val_losses = []
 val_ious = []
 
+background_ious = []
+mild_ious = []
+moderate_ious = []
+severe_ious = []
+
 for epoch in range(num_epochs):
 
     # ==========================
@@ -190,6 +195,12 @@ for epoch in range(num_epochs):
         where=count != 0
     )
 
+    # saving seperate IOU   
+    background_ious.append(class_iou[0])
+    mild_ious.append(class_iou[1])
+    moderate_ious.append(class_iou[2])
+    severe_ious.append(class_iou[3])
+
     # scheduler.step(class_iou)
     val_loss /= len(val_loader)
     val_losses.append(val_loss)
@@ -243,11 +254,26 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Save history
+# history = pd.DataFrame({
+#     "epoch": range(1, num_epochs + 1),
+#     "train_loss": train_losses,
+#     "val_miou": val_ious
+# })
+
 history = pd.DataFrame({
     "epoch": range(1, num_epochs + 1),
+
     "train_loss": train_losses,
-    "val_miou": val_ious
+    "val_loss": val_losses,
+
+    "val_miou": val_ious,
+
+    "background_iou": background_ious,
+    "mild_iou": mild_ious,
+    "moderate_iou": moderate_ious,
+    "severe_iou": severe_ious,
 })
+
 
 history.to_csv(
     "training_history.csv",
@@ -277,3 +303,20 @@ plt.grid(True)
 plt.tight_layout()
 plt.savefig("miou_curve.png")
 plt.close()
+
+# IoU graphs
+plt.figure(figsize=(10,6))
+
+plt.plot(background_ious, label="Background")
+plt.plot(mild_ious, label="Mild")
+plt.plot(moderate_ious, label="Moderate")
+plt.plot(severe_ious, label="Severe")
+
+plt.xlabel("Epoch")
+plt.ylabel("IoU")
+plt.title("Per-Class IoU")
+plt.legend()
+plt.grid(True)
+
+plt.tight_layout()
+plt.savefig("class_iou_curve.png")
