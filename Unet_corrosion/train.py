@@ -54,7 +54,8 @@ val_dataset = CorrosionSegmentationDataset(
 
 train_loader = DataLoader(
     train_dataset,
-    batch_size=8,
+    # batch_size=8,
+    batch_size=4,
     shuffle=True,
     num_workers=4,
     pin_memory=True,
@@ -62,7 +63,8 @@ train_loader = DataLoader(
 
 val_loader = DataLoader(
     val_dataset,
-    batch_size=8,
+    # batch_size=8,
+    batch_size=4,
     shuffle=False,
     num_workers=4,
     pin_memory=True,
@@ -108,6 +110,10 @@ background_ious = []
 mild_ious = []
 moderate_ious = []
 severe_ious = []
+
+# For early stopping
+early_stopping_patience = 10
+epochs_without_improvement = 0
 
 for epoch in range(num_epochs):
 
@@ -222,9 +228,11 @@ for epoch in range(num_epochs):
     # ==========================
     # Save Best Model
     # ==========================
-    if val_iou > best_miou:
+    min_delta = 1e-4
+    if val_iou > best_miou + min_delta:
 
         best_miou = val_iou
+        epochs_without_improvement = 0
 
         torch.save(
             model.state_dict(),
@@ -241,12 +249,21 @@ for epoch in range(num_epochs):
             f"✓ Best model saved "
             f"(mIoU={best_miou:.4f})"
         )
+    else:
+        epochs_without_improvement += 1
 
     print(
         f"Epoch [{epoch+1}/{num_epochs}] "
         f"Loss: {avg_train_loss:.4f} "
         f"Val mIoU: {val_iou:.4f}"
     )
+
+    if epochs_without_improvement >= early_stopping_patience:
+        print(
+            f"\nEarly stopping triggered after "
+            f"{epoch+1} epochs."
+        )
+        break
 
 print(f"\nBest Validation mIoU: {best_miou:.4f}")
 

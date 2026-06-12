@@ -16,3 +16,5 @@ wheels/
 *.json
 *.pth
 *.pt
+*.ods
+*.xlsx
