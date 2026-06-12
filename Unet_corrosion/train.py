@@ -1,6 +1,5 @@
 import torch
 import segmentation_models_pytorch as smp
-# from torch.utils.data import Subset
 from sklearn.model_selection import train_test_split
 
 from torch.utils.data import DataLoader
@@ -10,7 +9,7 @@ from transforms import (
     get_val_transform,
 )
 from model import build_model
-from utils import compute_iou
+from utils import compute_iou, compute_class_iou
 
 import random
 import numpy as np
@@ -32,19 +31,12 @@ COLOR_TO_CLASS = {
     (0, 128, 128): 3,    # class3
 }
 
-# full_dataset = CorrosionSegmentationDataset(
-#     image_dir="images",
-#     mask_dir="masks",
-#     color_to_class=COLOR_TO_CLASS
-# )
-
-# indices = list(range(len(full_dataset)))
-
-# train_indices, val_indices = train_test_split(
-#     indices,
-#     test_size=0.2,
-#     random_state=42
-# )
+CLASS_NAMES = [
+    "background",
+    "mild",
+    "moderate",
+    "severe"
+]
 
 train_dataset = CorrosionSegmentationDataset(
     image_dir="/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512/Train/images_512",
@@ -59,9 +51,6 @@ val_dataset = CorrosionSegmentationDataset(
     color_to_class=COLOR_TO_CLASS,
     transform=get_val_transform()
 )
-
-# train_dataset = Subset(train_dataset, train_indices)
-# val_dataset = Subset(val_dataset, val_indices)
 
 train_loader = DataLoader(
     train_dataset,
@@ -112,6 +101,7 @@ num_epochs = 50
 best_miou = 0.0
 
 train_losses = []
+val_losses = []
 val_ious = []
 
 for epoch in range(num_epochs):
@@ -152,6 +142,11 @@ for epoch in range(num_epochs):
 
     val_iou = 0.0
 
+    #Trying new per class iou
+    total_iou = np.zeros(4)
+    count = np.zeros(4)
+
+    val_loss = 0
     with torch.no_grad():
 
         for images, masks in val_loader:
@@ -166,14 +161,52 @@ for epoch in range(num_epochs):
                 masks,
                 num_classes=4,
             )
+            batch_ious = compute_class_iou(
+            outputs,
+            masks,
+            num_classes=4,
+            )
+
+            loss = (
+                ce_loss(outputs, masks)
+                + dice_loss(outputs, masks)
+            )
+
+            val_loss += loss.item()
+
+            for cls, iou in enumerate(batch_ious):
+
+                if not np.isnan(iou):
+                    total_iou[cls] += iou
+                    count[cls] += 1
+
     val_iou /= len(val_loader)
     scheduler.step(val_iou)
+    # class_iou = total_iou / count
+    class_iou = np.divide(
+        total_iou,
+        count,
+        out=np.zeros_like(total_iou),
+        where=count != 0
+    )
+
+    # scheduler.step(class_iou)
+    val_loss /= len(val_loader)
+    val_losses.append(val_loss)
+
+    for cls, name in enumerate(CLASS_NAMES):
+
+        print(
+            f"{name}: "
+            f"{class_iou[cls]:.4f}"
+        )
 
     # ==========================
     # History
     # ==========================
     train_losses.append(avg_train_loss)
     val_ious.append(val_iou)
+    # val_ious.append(class_iou)
 
     # ==========================
     # Save Best Model
@@ -223,12 +256,12 @@ history.to_csv(
 
 # Loss graph
 plt.figure(figsize=(8, 5))
-plt.plot(train_losses)
-plt.title("Training Loss")
+plt.plot(train_losses, label="Train Loss")
+plt.plot(val_losses, label="Val Loss")
+plt.legend()
+plt.title("Training & Validation Loss")
 plt.xlabel("Epoch")
 plt.ylabel("Loss")
-plt.grid(True)
-plt.savefig("loss_curve.png")
 plt.grid(True)
 plt.tight_layout()
 plt.savefig("loss_curve.png")
