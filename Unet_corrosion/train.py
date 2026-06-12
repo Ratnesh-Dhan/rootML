@@ -47,14 +47,14 @@ COLOR_TO_CLASS = {
 # )
 
 train_dataset = CorrosionSegmentationDataset(
-    image_dir="/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512/Train/image_512",
+    image_dir="/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512/Train/images_512",
     mask_dir="/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512/Train/mask_512",
     color_to_class=COLOR_TO_CLASS,
     transform=get_train_transform()
 )
 
 val_dataset = CorrosionSegmentationDataset(
-    image_dir="/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512/Test/_512",
+    image_dir="/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512/Test/images_512",
     mask_dir="/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512/Test/mask_512",
     color_to_class=COLOR_TO_CLASS,
     transform=get_val_transform()
