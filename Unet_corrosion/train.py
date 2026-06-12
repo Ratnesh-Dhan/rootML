@@ -1,6 +1,6 @@
 import torch
 import segmentation_models_pytorch as smp
-from torch.utils.data import Subset
+# from torch.utils.data import Subset
 from sklearn.model_selection import train_test_split
 
 from torch.utils.data import DataLoader
@@ -32,36 +32,36 @@ COLOR_TO_CLASS = {
     (0, 128, 128): 3,    # class3
 }
 
-full_dataset = CorrosionSegmentationDataset(
-    image_dir="images",
-    mask_dir="masks",
-    color_to_class=COLOR_TO_CLASS
-)
+# full_dataset = CorrosionSegmentationDataset(
+#     image_dir="images",
+#     mask_dir="masks",
+#     color_to_class=COLOR_TO_CLASS
+# )
 
-indices = list(range(len(full_dataset)))
+# indices = list(range(len(full_dataset)))
 
-train_indices, val_indices = train_test_split(
-    indices,
-    test_size=0.2,
-    random_state=42
-)
+# train_indices, val_indices = train_test_split(
+#     indices,
+#     test_size=0.2,
+#     random_state=42
+# )
 
 train_dataset = CorrosionSegmentationDataset(
-    image_dir="images",
-    mask_dir="masks",
+    image_dir="/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512/Train/image_512",
+    mask_dir="/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512/Train/mask_512",
     color_to_class=COLOR_TO_CLASS,
     transform=get_train_transform()
 )
 
 val_dataset = CorrosionSegmentationDataset(
-    image_dir="images",
-    mask_dir="masks",
+    image_dir="/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512/Test/_512",
+    mask_dir="/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512/Test/mask_512",
     color_to_class=COLOR_TO_CLASS,
     transform=get_val_transform()
 )
 
-train_dataset = Subset(train_dataset, train_indices)
-val_dataset = Subset(val_dataset, val_indices)
+# train_dataset = Subset(train_dataset, train_indices)
+# val_dataset = Subset(val_dataset, val_indices)
 
 train_loader = DataLoader(
     train_dataset,
