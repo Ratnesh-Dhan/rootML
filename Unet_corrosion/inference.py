@@ -10,8 +10,8 @@ DEVICE = torch.device(
     "cuda" if torch.cuda.is_available() else "cpu"
 )
 
-IMAGE_DIR = "test_images"
-OUTPUT_DIR = "predictions"
+IMAGE_DIR = "/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512/Test/images_512"
+OUTPUT_DIR = "/mnt/z/DATASETS/predictions3"
 
 Path(OUTPUT_DIR).mkdir(
     parents=True,
@@ -24,7 +24,7 @@ Path(OUTPUT_DIR).mkdir(
 model = build_model(num_classes=2)
 
 checkpoint = torch.load(
-    "best_model.pth",
+    "/mnt/z/codes/rootML/Unet_corrosion/model/best_model.pth",
     map_location=DEVICE
 )
 
