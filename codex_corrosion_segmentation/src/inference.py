@@ -107,6 +107,44 @@ def predict_single_image(image_path, checkpoint_path, output_path, device):
     print(f"Saved prediction: {output_path.with_name(output_path.stem + '_overlay.png')}")
 
 
+
+def main():
+    image_folder = "/mnt/z/DATASETS/corrosion_detect/images"
+    output_folder = "/mnt/z/DATASETS/output_corrosion_29_5_26"
+    os.makedirs(output_folder, exist_ok=True)
+    # checkpoint_path = Path(args.checkpoint)
+    # checkpoint_path = Path("./outputs/checkpoints/best.pth")
+    checkpoint_path = Path("D:\Models\Corrosion_Condition_State_Classification_Models&Outputs\checkpoints\last.pth")
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"Using device: {device}")
+
+    for image in os.listdir(image_folder):
+        image_path = Path(image_folder) / image
+        output_path = Path(output_folder) / f"{image_path.stem}_pred_mask.png"
+        predict_single_image(
+            image_path=image_path,
+            checkpoint_path=checkpoint_path,
+            output_path=output_path,
+            device=device,
+        )
+
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+
+
+
+
+
+
+
+
 # def main():
 #     parser = argparse.ArgumentParser()
 #     parser.add_argument("--image", type=str, required=True)
@@ -134,28 +172,3 @@ def predict_single_image(image_path, checkpoint_path, output_path, device):
 #         output_path=output_path,
 #         device=device,
 #     )
-
-def main():
-    image_folder = "/mnt/z/DATASETS/corrosion_detect/images"
-    output_folder = "/mnt/z/DATASETS/output_corrosion_29_5_26"
-    os.makedirs(output_folder, exist_ok=True)
-    # checkpoint_path = Path(args.checkpoint)
-    # checkpoint_path = Path("./outputs/checkpoints/best.pth")
-    checkpoint_path = Path("D:\DATASETS\CORROSION\outputs\checkpoints\last.pth")
-
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"Using device: {device}")
-
-    for image in os.listdir(image_folder):
-        image_path = Path(image_folder) / image
-        output_path = Path(output_folder) / f"{image_path.stem}_pred_mask.png"
-        predict_single_image(
-            image_path=image_path,
-            checkpoint_path=checkpoint_path,
-            output_path=output_path,
-            device=device,
-        )
-
-
-if __name__ == "__main__":
-    main()
