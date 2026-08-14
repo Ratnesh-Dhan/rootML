@@ -17,18 +17,20 @@ from configs.config import (
     ENCODER_NAME,
     CLASS_TO_COLOR,
 )
-ENCODER_NAME = "efficientnet-b0"
+# ENCODER_NAME = "efficientnet-b0"
 # ============================================================
 # CHANGE THESE PATHS
 # ============================================================
 
-IMAGE_FOLDER = r"/mnt/d/DATASETS/CORROSION/Corrosion_Condition_State_Classification/Corrosion_Condition_State_Classification/512x512/Test/images_512"
-MASK_FOLDER = r"/mnt/d/DATASETS/CORROSION/Corrosion_Condition_State_Classification/Corrosion_Condition_State_Classification/512x512/Test/mask_512"
-OUTPUT_FOLDER = r"./outputs"
+IMAGE_FOLDER = r"/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512/Test/images_512"
+MASK_FOLDER = r"/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512/Test/mask_512"
+OUTPUT_FOLDER = r"./four_partition_output"
 
-CHECKPOINT_PATH = Path(
-    r"/mnt/d/Models/Corrosion_Condition_State_Classification_Models&Outputs/checkpoints/last.pth"
-)
+# CHECKPOINT_PATH = Path(
+#     r"D:/Models/Corrosion_Condition_State_Classification_Models&Outputs/checkpoints/last.pth"
+# )
+
+CHECKPOINT_PATH = Path( r"/mnt/z/codes/rootML/codex_corrosion_segmentation/outputs/checkpoints/best.pth")
 
 # ============================================================
 
