@@ -9,11 +9,11 @@ from pathlib import Path
 # ============================================================
 
 SOURCE_DIR = Path(
-    r"/media/zumbie/6CA45A53A45A203E/2026-coal_samples/Himanshu Coal Samples 2026/16 size"
+    r"/mnt/z/DATASETS/Coal_Patch/FINAL_DATASET/SPLIT_THIS"
 )
 
 OUTPUT_DIR = Path(
-    r"/media/zumbie/6CA45A53A45A203E/2026-coal_samples/Himanshu Coal Samples 2026/16_split"
+    r"/mnt/z/DATASETS/Coal_Patch/FINAL_DATASET/SPLIT"
 )
 
 TRAIN_RATIO = 0.70

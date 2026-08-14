@@ -18,13 +18,14 @@ from torch.optim import (
     RMSprop,
     Adadelta,
     AdamW,
+    NAdam,
 )
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 from sklearn.metrics import classification_report, confusion_matrix
 
 from model import CNN
-from dataset_loader import load_dataset
+from dataLoader import load_dataset
 
 
 # ============================================================
@@ -34,8 +35,8 @@ from dataset_loader import load_dataset
 BATCH_SIZE = 64
 EPOCHS = 100
 
-BASE_MODEL_DIR = "./models_feb23_2026"
-BASE_RESULT_DIR = "./results_feb23_2026"
+BASE_MODEL_DIR = "./models_aug15_2026"
+BASE_RESULT_DIR = "./results_aug15_2026"
 
 EARLY_STOPPING_PATIENCE = 5
 
@@ -74,16 +75,18 @@ train_loader, validation_loader = load_dataset(
     batch_size=BATCH_SIZE
 )
 
-num_classes = len(
-    train_loader.dataset.dataset.classes
-)
+# num_classes = len(
+#     train_loader.dataset.dataset.classes
+# )
 
-class_names = (
-    train_loader
-    .dataset
-    .dataset
-    .classes
-)
+# class_names = (
+#     train_loader
+#     .dataset
+#     .dataset
+#     .classes
+# )
+num_classes = len(train_loader.dataset.classes)
+class_names = train_loader.dataset.classes
 
 class_indices = {
     name: index
@@ -129,7 +132,8 @@ def create_optimizer(name, model):
         return Adadelta(model.parameters())
 
     elif name == "Nadam":
-        return torch.optim.NAdam(model.parameters())
+        return NAdam(model.parameters())
+        # return torch.optim.NAdam(model.parameters())
 
     elif name == "AdamW":
         return AdamW(model.parameters())

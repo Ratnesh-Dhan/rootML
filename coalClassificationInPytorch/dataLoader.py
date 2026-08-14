@@ -3,8 +3,8 @@ from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
 
-TRAIN_DIR = r"/mnt/d/NML ML Works/newCoalByDeepBhaiya/16/TRAINING 16"
-VALIDATION_DIR = r"/mnt/d/NML ML Works/newCoalByDeepBhaiya/16/VALIDATION"
+TRAIN_DIR = r"/mnt/z/DATASETS/Coal_Patch/FINAL_DATASET/SPLIT/TRAIN"
+VALIDATION_DIR = r"/mnt/z/DATASETS/Coal_Patch/FINAL_DATASET/SPLIT/VALIDATION"
 
 
 def load_dataset(batch_size):
