@@ -35,8 +35,8 @@ from dataLoader import load_dataset
 BATCH_SIZE = 64
 EPOCHS = 100
 
-BASE_MODEL_DIR = "./models_aug15_2026"
-BASE_RESULT_DIR = "./results_aug15_2026"
+BASE_MODEL_DIR = "./models_aug17_2026"
+BASE_RESULT_DIR = "./results_aug17_2026"
 
 EARLY_STOPPING_PATIENCE = 5
 
@@ -120,23 +120,23 @@ print()
 def create_optimizer(name, model):
 
     if name == "Adam":
-        return Adam(model.parameters())
+        return Adam(model.parameters(), lr=0.001)
 
     elif name == "Adagrad":
-        return Adagrad(model.parameters())
+        return Adagrad(model.parameters(), lr=0.01)
 
     elif name == "RMSprop":
-        return RMSprop(model.parameters())
+        return RMSprop(model.parameters(), lr=0.001)
 
     elif name == "Adadelta":
-        return Adadelta(model.parameters())
+        return Adadelta(model.parameters(), lr=1.0)
 
     elif name == "Nadam":
-        return NAdam(model.parameters())
+        return NAdam(model.parameters(), lr=0.001)
         # return torch.optim.NAdam(model.parameters())
 
     elif name == "AdamW":
-        return AdamW(model.parameters())
+        return AdamW(model.parameters(), lr=0.001)
 
     else:
         raise ValueError(
