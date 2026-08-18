@@ -24,12 +24,10 @@ NUM_CLASSES = 5
 
 # Full image directory
 IMAGE_ROOT = (
-    "/media/zumbie/6CA45A53A45A203E/"
-    "2026-coal_samples/"
-    "Himanshu Coal Samples 2026"
+    "/mnt/z/DATASETS/CoalFullImagesC&DBM/final32New"
 )
 
-RESULT_ROOT = "../train_batch/results/feb23_26"
+RESULT_ROOT = "./results"
 
 
 # ============================================================
@@ -38,32 +36,32 @@ RESULT_ROOT = "../train_batch/results/feb23_26"
 
 MODEL_PATHS = {
     "Adam": (
-        "./models_feb23_2026/Adam/"
+        "./models_aug17_2026_100_epochs/Adam/"
         "checkpoint_best_weights.pth"
     ),
 
     "Adadelta": (
-        "./models_feb23_2026/Adadelta/"
+        "./models_aug17_2026_100_epochs/Adadelta/"
         "checkpoint_best_weights.pth"
     ),
 
     "Adagrad": (
-        "./models_feb23_2026/Adagrad/"
+        "./models_aug17_2026_100_epochs/Adagrad/"
         "checkpoint_best_weights.pth"
     ),
 
     "AdamW": (
-        "./models_feb23_2026/AdamW/"
+        "./models_aug17_2026_100_epochs/AdamW/"
         "checkpoint_best_weights.pth"
     ),
 
     "Nadam": (
-        "./models_feb23_2026/Nadam/"
+        "./models_aug17_2026_100_epochs/Nadam/"
         "checkpoint_best_weights.pth"
     ),
 
     "RMSprop": (
-        "./models_feb23_2026/RMSprop/"
+        "./models_aug17_2026_100_epochs/RMSprop/"
         "checkpoint_best_weights.pth"
     ),
 }
