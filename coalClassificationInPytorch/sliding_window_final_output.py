@@ -24,10 +24,11 @@ NUM_CLASSES = 5
 
 # Full image directory
 IMAGE_ROOT = (
-    "/mnt/z/DATASETS/CoalFullImagesC&DBM/final32New"
+    "/mnt/z/DATASETS/CoalFullImagesC&DBM/coal2026_Full_Images"
 )
 
-RESULT_ROOT = "./results"
+RESULT_ROOT = "./resultsHimanshu"
+os.makedirs(RESULT_ROOT,exist_ok=True)
 
 
 # ============================================================

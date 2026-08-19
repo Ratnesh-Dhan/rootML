@@ -1,7 +1,7 @@
 import os, re
 import pandas as pd 
 
-base_path = "./results"
+base_path = "./resultsHimanshu"
 # base_path = "/mnt/d/RESULTS/november20_coal_classification/november18"
 # model_names = os.listdir(base_path)
 # print(model_names)
@@ -46,7 +46,33 @@ for model_name in model_names:
     # row.sort(key=lambda r: int(r['Sample'][1:])) # FROM C
     # # row.sort(key=lambda r: int(r['Sample'][3:])) # FOR DBM
 
-    row.sort(key=lambda r: int(re.findall(r'\d+', r['Sample'])[0])) 
+    
+    # This is 2nd last attempt .
+    # row.sort(key=lambda r: int(re.findall(r'\d+', r['Sample'])[0])) 
+
+
+    def sample_sort(r):
+        sample = r['Sample']
+
+        # Extract number
+        num = int(re.findall(r'\d+', sample)[0])
+
+        # Put C before DBM
+        if sample.startswith('C'):
+            prefix = 0
+        elif sample.startswith('DBM'):
+            prefix = 1
+        else:
+            prefix = 2
+
+        return (prefix, num)
+
+    row.sort(key=sample_sort)
+
+
+
+
+
     #     # Sort properly
     # row.sort(key=lambda r: r['Sample'])
 
