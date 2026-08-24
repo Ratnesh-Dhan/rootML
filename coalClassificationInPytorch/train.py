@@ -35,8 +35,8 @@ from dataLoader import load_dataset
 BATCH_SIZE = 64
 EPOCHS = 100
 
-BASE_MODEL_DIR = "./models_aug17_2026_100_epochs"
-BASE_RESULT_DIR = "./results_aug17_2026_100_epochs"
+BASE_MODEL_DIR = "./models_aug24_2026_100_epochs"
+BASE_RESULT_DIR = "./results_aug24_2026_100_epochs"
 
 # EARLY_STOPPING_PATIENCE = 5
 EARLY_STOPPING_PATIENCE = 100
