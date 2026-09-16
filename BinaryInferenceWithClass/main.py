@@ -1,5 +1,3 @@
-from Unet_corrosion.inference import corrosion_pixels
-import segmentation_models_pytorch as smp
 import os
 import sys
 from pathlib import Path
