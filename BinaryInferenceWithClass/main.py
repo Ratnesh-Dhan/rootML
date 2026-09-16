@@ -67,7 +67,7 @@ unetModel.eval()
 # Load DeeplabV3 3 class segmentation model (Only to determine class of the corrosion not overlay)
 deepLabModel = build_deeplabv3_model().to(DEVICE)
 deepLabmodelCheckpoint = torch.load("/mnt/z/codes/rootML/codex_corrosion_segmentation/outputs/checkpoints/best/pth", map_location=DEVICE)
-deepLabModel.load_state_dict(checkpoint["model_state_dict"])
+deepLabModel.load_state_dict(deepLabmodelCheckpoint["model_state_dict"])
 deepLabModel.eval()
 
 # Inference with both models
