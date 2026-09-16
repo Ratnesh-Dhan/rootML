@@ -1,7 +1,7 @@
 import os, re
 import pandas as pd 
 
-base_path = "./resultsHimanshu"
+base_path = "./resultsHimanshu3september"
 # base_path = "/mnt/d/RESULTS/november20_coal_classification/november18"
 # model_names = os.listdir(base_path)
 # print(model_names)

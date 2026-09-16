@@ -24,10 +24,10 @@ NUM_CLASSES = 5
 
 # Full image directory
 IMAGE_ROOT = (
-    "/mnt/z/DATASETS/CoalFullImagesC&DBM/coal2026_Full_Images"
+    "/mnt/z/DATASETS/CoalFullImagesC&DBM/modifidHimanshuFiles"
 )
 
-RESULT_ROOT = "./resultsHimanshu"
+RESULT_ROOT = "./resultsHimanshu3september"
 os.makedirs(RESULT_ROOT,exist_ok=True)
 
 
@@ -37,32 +37,32 @@ os.makedirs(RESULT_ROOT,exist_ok=True)
 
 MODEL_PATHS = {
     "Adam": (
-        "./models_aug17_2026_100_epochs/Adam/"
+        "./models_aug24_2026_100_epochs/Adam/"
         "checkpoint_best_weights.pth"
     ),
 
     "Adadelta": (
-        "./models_aug17_2026_100_epochs/Adadelta/"
+        "./models_aug24_2026_100_epochs/Adadelta/"
         "checkpoint_best_weights.pth"
     ),
 
     "Adagrad": (
-        "./models_aug17_2026_100_epochs/Adagrad/"
+        "./models_aug24_2026_100_epochs/Adagrad/"
         "checkpoint_best_weights.pth"
     ),
 
     "AdamW": (
-        "./models_aug17_2026_100_epochs/AdamW/"
+        "./models_aug24_2026_100_epochs/AdamW/"
         "checkpoint_best_weights.pth"
     ),
 
     "Nadam": (
-        "./models_aug17_2026_100_epochs/Nadam/"
+        "./models_aug24_2026_100_epochs/Nadam/"
         "checkpoint_best_weights.pth"
     ),
 
     "RMSprop": (
-        "./models_aug17_2026_100_epochs/RMSprop/"
+        "./models_aug24_2026_100_epochs/RMSprop/"
         "checkpoint_best_weights.pth"
     ),
 }
@@ -445,13 +445,13 @@ for optimizer_name, model_path in MODEL_PATHS.items():
                 # Black rectangle
                 # ------------------------------------------------
 
-                img = cv2.rectangle(
-                    img,
-                    (2146, 30),
-                    (2572, 162),
-                    (0, 0, 0),
-                    -1
-                )
+                # img = cv2.rectangle(
+                #     img,
+                #     (2146, 30),
+                #     (2572, 162),
+                #     (0, 0, 0),
+                #     -1
+                # )
 
                 # ------------------------------------------------
                 # Sliding window inference
