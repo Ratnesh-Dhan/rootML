@@ -98,6 +98,7 @@ with torch.no_grad():
         corrosion_pixels = pred_mask == 1
         overlay[corrosion_pixels] = (0.4*overlay[corrosion_pixels]+0.6*np.array([0,0,255]))
         overlay = overlay.astype(np.uint8)
+        overlay = cv2.cvtColor(overlay, cv2.COLOR_BGR2RGB)
 
         # Inference with DeepLab model..
         transform = A.Compose([A.Resize(IMAGE_SIZE, IMAGE_SIZE)])
