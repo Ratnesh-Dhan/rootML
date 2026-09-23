@@ -91,7 +91,7 @@ with torch.no_grad():
         outputs = unetModel(image_tensor)
         pred_mask = torch.argmax(outputs, dim=1)[0]
         pred_mask = (pred_mask.cpu().numpy().astype(np.uint8))
-        pred_mask =cv2.resize(pred_mask, (original_w, original_h), Interpolation=cv2.INTER_NEAREST)
+        pred_mask =cv2.resize(pred_mask, (original_w, original_h), interpolation=cv2.INTER_NEAREST)
 
         # Creating overlay
         overlay = image_bgr.copy()
