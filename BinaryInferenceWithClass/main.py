@@ -110,15 +110,18 @@ with torch.no_grad():
         pred = torch.argmax(logits, dim=1).squeeze(0).cpu().numpy().astype(np.uint8)
         pred = cv2.resize(pred, (original_w, original_h), interpolation=cv2.INTER_NEAREST)
         pred_pct = calculate_percentages(pred)
-        txt = (
-            "Prediction\n\n"
-            f"Lite : {pred_pct[1]:6.2f}%\n"
-            f"Mild : {pred_pct[2]:6.2f}%\n"
-            f"Severe : {pred_pct[3]:6.2f}%"
-        )
+        # txt = (
+        #     "Prediction\n\n"
+        #     f"Lite : {pred_pct[1]:6.2f}%\n"
+        #     f"Mild : {pred_pct[2]:6.2f}%\n"
+        #     f"Severe : {pred_pct[3]:6.2f}%"
+        # )
+        txt1=f"Lite : {pred_pct[1]:6.2f}%"
+        txt2=f"Mild : {pred_pct[2]:6.2f}%"
+        txt3=f"Severe : {pred_pct[3]:6.2f}%"
 
         # Saving images
-        _, ax = plt.subplots(1,3, figsize=(21, 7))
+        _, ax = plt.subplots(1,3, figsize=(20, 8), gridspec_kw={'width_ratios': [1,1,0.5]})
         ax[0].imshow(image_rgb)
         ax[0].set_title("Input Image")
         ax[0].axis("off")
@@ -128,7 +131,12 @@ with torch.no_grad():
         ax[1].axis("off")
 
         ax[2].axis("off")
-        ax[2].text(0,1,txt,fontsize=16,va="top",family="monospace")
+        # ax[2].text(0,1,txt,fontsize=25,va="top",family="monospace")
+        ax[2].text(0, 0.85, "Prediction", fontsize=22, weight="bold", va="top", family="monospace")
+        # Individual lines with custom colors
+        ax[2].text(0, 0.70, f"Lite   : {pred_pct[1]:6.2f}%", fontsize=20, va="top", family="monospace", color="green")
+        ax[2].text(0, 0.55, f"Mild   : {pred_pct[2]:6.2f}%", fontsize=20, va="top", family="monospace", color="orange")
+        ax[2].text(0, 0.40, f"Severe : {pred_pct[3]:6.2f}%", fontsize=20, va="top", family="monospace", color="red")
 
         plt.tight_layout()
         plt.savefig(os.path.join(OUTPUT_DIR, os.path.basename(image_path)), dpi=200, bbox_inches="tight")
