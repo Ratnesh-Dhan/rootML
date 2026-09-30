@@ -101,11 +101,11 @@ with torch.no_grad():
         deepLab_image_tensor = deepLab_image_tensor.to(DEVICE)
         logits = deepLabModel(deepLab_image_tensor)
         pred = torch.argmax(logits, dim=1).squeeze(0).cpu().numpy().astype(np.uint8)
+        pred_pct = calculate_percentages(pred)
         pred_bgr = class_mask_to_bgr(pred)
         pred = cv2.resize(pred_bgr, (original_w, original_h), interpolation=cv2.INTER_NEAREST)
         overlay = cv2.addWeighted(image_bgr, 0.65, pred_bgr, 0.35, 0)
         overlay = cv2.cvtColor(overlay, cv2.COLOR_BGR2RGB)
-        pred_pct = calculate_percentages(pred)
         txt1=f"Lite : {pred_pct[1]:6.2f}%"
         txt2=f"Mild : {pred_pct[2]:6.2f}%"
         txt3=f"Severe : {pred_pct[3]:6.2f}%"
