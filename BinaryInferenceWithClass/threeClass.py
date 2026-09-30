@@ -104,6 +104,7 @@ with torch.no_grad():
         pred_bgr = class_mask_to_bgr(pred)
         pred = cv2.resize(pred_bgr, (original_w, original_h), interpolation=cv2.INTER_NEAREST)
         overlay = cv2.addWeighted(image_bgr, 0.65, pred_bgr, 0.35, 0)
+        overlay = cv2.cvtColor(overlay, cv2.COLOR_BGR2RGB)
         pred_pct = calculate_percentages(pred)
         txt1=f"Lite : {pred_pct[1]:6.2f}%"
         txt2=f"Mild : {pred_pct[2]:6.2f}%"
