@@ -2,13 +2,14 @@ from pathlib import Path
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import sys
+sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 
 # ============================================================
 # CONFIG
 # ============================================================
-
-CHECKPOINT_DIR = Path("checkpoints")
+from configs.config import CHECKPOINT_DIR
 PLOT_DIR = CHECKPOINT_DIR / "plots"
 
 OPTIMIZERS = [
