@@ -16,6 +16,7 @@ from configs.config import (
     NUM_CLASSES,
     ENCODER_NAME,
     CLASS_TO_COLOR,
+    COLOR_TO_CLASS_Dataset
 )
 # ENCODER_NAME = "efficientnet-b0"
 # ============================================================
@@ -24,13 +25,14 @@ from configs.config import (
 
 IMAGE_FOLDER = r"/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512/Test/images_512"
 MASK_FOLDER = r"/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512/Test/mask_512"
-OUTPUT_FOLDER = r"./four_partition_output"
+OUTPUT_FOLDER = r"./four_partition_output_new"
 
 # CHECKPOINT_PATH = Path(
 #     r"D:/Models/Corrosion_Condition_State_Classification_Models&Outputs/checkpoints/last.pth"
 # )
 
-CHECKPOINT_PATH = Path( r"/mnt/z/codes/rootML/codex_corrosion_segmentation/outputs/checkpoints/best.pth")
+# CHECKPOINT_PATH = Path( r"/mnt/z/codes/rootML/codex_corrosion_segmentation/outputs/checkpoints/best.pth")
+CHECKPOINT_PATH = Path( r"/mnt/z/codes/rootML/codex_corrosion_segmentation/outputs/checkpoints/adamw/best.pth")
 
 # ============================================================
 
@@ -67,7 +69,8 @@ def load_gt_mask(mask_path):
 
     class_mask = np.zeros(mask_bgr.shape[:2], dtype=np.uint8)
 
-    for class_id, color in CLASS_TO_COLOR.items():
+    # for class_id, color in CLASS_TO_COLOR.items():
+    for class_id, color in COLOR_TO_CLASS_Dataset.items():
         color = np.array(color, dtype=np.uint8)
         matches = np.all(mask_bgr == color, axis=-1)
         class_mask[matches] = class_id
@@ -141,7 +144,7 @@ def predict_single_image(
     gt = load_gt_mask(mask_path)
 
     pred_color = class_mask_to_bgr(pred, CLASS_TO_COLOR)
-    gt_color = class_mask_to_bgr(gt, CLASS_TO_COLOR)
+    gt_color = class_mask_to_bgr(gt, CLASS_TO_COLOR_Dataset)
 
     gt_overlay = cv2.addWeighted(image_bgr, 0.65, gt_color, 0.35, 0)
     pred_overlay = cv2.addWeighted(image_bgr, 0.65, pred_color, 0.35, 0)
@@ -168,26 +171,36 @@ def predict_single_image(
 
     ax[3].axis("off")
 
-    txt = (
-        "Ground Truth\n\n"
-        f"Class 1 : {gt_pct[1]:6.2f}%\n"
-        f"Class 2 : {gt_pct[2]:6.2f}%\n"
-        f"Class 3 : {gt_pct[3]:6.2f}%\n\n"
-        "Prediction\n\n"
-        f"Class 1 : {pred_pct[1]:6.2f}%\n"
-        f"Class 2 : {pred_pct[2]:6.2f}%\n"
-        f"Class 3 : {pred_pct[3]:6.2f}%"
-    )
+    # txt = (
+    #     "Ground Truth\n\n"
+    #     f"Class 1 : {gt_pct[1]:6.2f}%\n"
+    #     f"Class 2 : {gt_pct[2]:6.2f}%\n"
+    #     f"Class 3 : {gt_pct[3]:6.2f}%\n\n"
+    #     "Prediction\n\n"
+    #     f"Class 1 : {pred_pct[1]:6.2f}%\n"
+    #     f"Class 2 : {pred_pct[2]:6.2f}%\n"
+    #     f"Class 3 : {pred_pct[3]:6.2f}%"
+    # )
 
-    ax[3].text(
-        0,
-        1,
-        txt,
-        fontsize=16,
-        va="top",
-        family="monospace",
-    )
-
+    # ax[3].text(
+    #     0,
+    #     1,
+    #     txt,
+    #     fontsize=16,
+    #     va="top",
+    #     family="monospace",
+    # )
+    ax[3].text(0, 0.95, "Ground Truth", fontsize=22, weight="bold", va="top", family="monospace")
+    # Individual lines with custom colors
+    ax[3].text(0, 0.85, f"Lite   : {gt_pct[1]:6.2f}%", fontsize=20, va="top", family="monospace", color="green")
+    ax[3].text(0, 0.75, f"Moderate   : {gt_pct[2]:6.2f}%", fontsize=20, va="top", family="monospace", color="orange")
+    ax[3].text(0, 0.65, f"Severe : {gt_pct[3]:6.2f}%", fontsize=20, va="top", family="monospace", color="red")
+    
+    ax[3].text(0, 0.50, "Prediction", fontsize=22, weight="bold", va="top", family="monospace")
+    # Individual lines with custom colors
+    ax[3].text(0, 0.40, f"Lite   : {pred_pct[1]:6.2f}%", fontsize=20, va="top", family="monospace", color="green")
+    ax[3].text(0, 0.30, f"Moderate   : {pred_pct[2]:6.2f}%", fontsize=20, va="top", family="monospace", color="orange")
+    ax[3].text(0, 0.20, f"Severe : {pred_pct[3]:6.2f}%", fontsize=20, va="top", family="monospace", color="red")
     plt.tight_layout()
 
     output_path.parent.mkdir(parents=True, exist_ok=True)

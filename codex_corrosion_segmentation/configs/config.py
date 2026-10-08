@@ -46,8 +46,8 @@ CLASS_NAMES = [
     "class3",
 ]
 
-# Your masks are described as BGR colors because OpenCV reads PNGs as BGR.
-COLOR_TO_CLASS = {
+# # Your masks are described as BGR colors because OpenCV reads PNGs as BGR.
+COLOR_TO_CLASS_Dataset = {
     (0, 0, 0): 0,        # background
     (0, 0, 128): 1,      # class1
     (0, 128, 0): 2,      # class2
