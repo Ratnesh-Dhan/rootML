@@ -60,6 +60,12 @@ def load_gt_mask(mask_path):
     """
     Convert color PNG mask into class-index mask.
     """
+    class_to_color = {
+        0: (0,0,0),
+        1: (0,0,128),
+        2: (0,128,0),
+        3: (0,128,128),
+    }
 
     mask_bgr = cv2.imread(str(mask_path))
 
@@ -68,7 +74,7 @@ def load_gt_mask(mask_path):
 
     class_mask = np.zeros(mask_bgr.shape[:2], dtype=np.uint8)
 
-    for class_id, color in CLASS_TO_COLOR.items():
+    for class_id, color in class_to_color.items():
         color = np.array(color, dtype=np.uint8)
         matches = np.all(mask_bgr == color, axis=-1)
         class_mask[matches] = class_id
