@@ -16,7 +16,6 @@ from configs.config import (
     NUM_CLASSES,
     ENCODER_NAME,
     CLASS_TO_COLOR,
-    COLOR_TO_CLASS_Dataset
 )
 # ENCODER_NAME = "efficientnet-b0"
 # ============================================================
@@ -25,7 +24,7 @@ from configs.config import (
 
 IMAGE_FOLDER = r"/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512/Test/images_512"
 MASK_FOLDER = r"/mnt/z/DATASETS/Corrosion_Condition_State_Classification/512x512/Test/mask_512"
-OUTPUT_FOLDER = r"./four_partition_output_new"
+OUTPUT_FOLDER = r"./four_partition_output_09-10-2026"
 
 # CHECKPOINT_PATH = Path(
 #     r"D:/Models/Corrosion_Condition_State_Classification_Models&Outputs/checkpoints/last.pth"
@@ -69,8 +68,7 @@ def load_gt_mask(mask_path):
 
     class_mask = np.zeros(mask_bgr.shape[:2], dtype=np.uint8)
 
-    # for class_id, color in CLASS_TO_COLOR.items():
-    for class_id, color in COLOR_TO_CLASS_Dataset.items():
+    for class_id, color in CLASS_TO_COLOR.items():
         color = np.array(color, dtype=np.uint8)
         matches = np.all(mask_bgr == color, axis=-1)
         class_mask[matches] = class_id
@@ -144,7 +142,7 @@ def predict_single_image(
     gt = load_gt_mask(mask_path)
 
     pred_color = class_mask_to_bgr(pred, CLASS_TO_COLOR)
-    gt_color = class_mask_to_bgr(gt, CLASS_TO_COLOR_Dataset)
+    gt_color = class_mask_to_bgr(gt, CLASS_TO_COLOR)
 
     gt_overlay = cv2.addWeighted(image_bgr, 0.65, gt_color, 0.35, 0)
     pred_overlay = cv2.addWeighted(image_bgr, 0.65, pred_color, 0.35, 0)
