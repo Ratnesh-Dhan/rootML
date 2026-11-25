@@ -12,7 +12,7 @@ class CNN(nn.Module):
             nn.ReLU(),
 
             # Second block
-            nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, padding=3),
+            nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, padding=1),
             nn.BatchNorm2d(64, eps=1e-3, momentum=0.01),
             nn.ReLU(),
         )
