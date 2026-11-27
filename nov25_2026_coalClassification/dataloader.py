@@ -8,11 +8,11 @@ from torchvision import datasets, transforms
 
 # Update these paths to match your actual folders.
 DEVELOPMENT_DIR = Path(
-    "/mnt/z/DATASETS/Coal_Patch/dataset_split/development"
+    "/mnt/z/DATASETS/Coal_Patch/working_directory/development"
 )
 
 TEST_DIR = Path(
-    "/mnt/z/DATASETS/Coal_Patch/dataset_split/test"
+    "/mnt/z/DATASETS/Coal_Patch/working_directory/test"
 )
 
 

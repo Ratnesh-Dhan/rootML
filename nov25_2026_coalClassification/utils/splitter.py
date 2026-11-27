@@ -2,10 +2,12 @@
 import random
 import shutil
 from pathlib import Path
+import os
 
 # Paths
-SOURCE_DIR = Path("dataset")
-OUTPUT_DIR = Path("dataset_split")
+SOURCE_DIR = Path("/mnt/z/DATASETS/Coal_Patch/Original")
+OUTPUT_DIR = Path("/mnt/z/DATASETS/Coal_Patch/working_directory")
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 TRAIN_DIR = OUTPUT_DIR / "development"
 TEST_DIR = OUTPUT_DIR / "test"
